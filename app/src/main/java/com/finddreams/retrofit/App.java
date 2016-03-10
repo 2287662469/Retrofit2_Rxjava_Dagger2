@@ -8,7 +8,7 @@ import com.finddreams.retrofit.api.config.DaggerAppComponent;
 import com.finddreams.retrofit.api.config.InteractorModule;
 
 /**
- * Application
+ * Application类
  *
  * @author finddreams
  * @address http://blog.csdn.net/finddreams
