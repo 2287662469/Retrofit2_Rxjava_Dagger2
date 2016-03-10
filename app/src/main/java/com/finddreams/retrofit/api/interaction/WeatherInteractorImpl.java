@@ -2,9 +2,8 @@ package com.finddreams.retrofit.api.interaction;
 
 
 import com.finddreams.retrofit.api.net.BaseSubsribe;
-import com.finddreams.retrofit.api.net.OnNetResultListener;
 import com.finddreams.retrofit.api.service.WeatherApiService;
-import com.finddreams.retrofit.bean.CityListBean;
+import com.finddreams.retrofit.bean.WeatherResultBean;
 
 import javax.inject.Inject;
 
@@ -24,15 +23,11 @@ public class WeatherInteractorImpl implements WeatherInteractor {
         this.api = myApi;
     }
 
+
     @Override
-    public Subscription getCitylist(String apikey, String cityname, final OnNetResultListener<CityListBean> resultListener) {
-        Observable<CityListBean> observable = api.getCitylist(apikey, cityname);
-        Subscription subscribe = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseSubsribe<CityListBean>() {
-            @Override
-            public void onSuccess(CityListBean s) {
-                resultListener.onSuccess(s);
-            }
-        });
+    public Subscription queryWeather(String apikey, String cityname, BaseSubsribe<WeatherResultBean> subsribe) {
+        Observable<WeatherResultBean> observable = api.queryWeather(apikey, cityname);
+        Subscription subscribe = observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subsribe);
         return subscribe;
     }
 }

@@ -2,17 +2,17 @@ package com.finddreams.retrofit.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.finddreams.retrofit.App;
 import com.finddreams.retrofit.R;
 import com.finddreams.retrofit.api.config.AppComponent;
 import com.finddreams.retrofit.api.config.ConstantApi;
 import com.finddreams.retrofit.api.interaction.WeatherInteractor;
-import com.finddreams.retrofit.api.net.OnNetResultListener;
-import com.finddreams.retrofit.bean.CityListBean;
-
-import java.util.ArrayList;
+import com.finddreams.retrofit.api.net.BaseSubsribe;
+import com.finddreams.retrofit.bean.WeatherResultBean;
 
 import rx.Subscription;
 
@@ -26,33 +26,51 @@ public class MainActivity extends AppCompatActivity {
 
 
     private AppComponent component;
-    private WeatherInteractor homeInteractor;
-    private ListView listView;
+    private WeatherInteractor weatherInteractor;
+    private EditText city;
+    private TextView queryresult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listView = (ListView) findViewById(R.id.listview);
+        city = (EditText) findViewById(R.id.city);
+        queryresult = (TextView) findViewById(R.id.queryresult);
+        //获取到AppComponent组件
         component = App.get(this).component();
-        homeInteractor = component.getWeatherInteractor();
+        //通过AppComponent拿到WeatherInteractor
+        weatherInteractor = component.getWeatherInteractor();
+        findViewById(R.id.query).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                queryWeatherData();
 
-        getWeatherData();
+            }
+
+        });
 
 
     }
 
-    public void getWeatherData() {
-        Subscription subscription = homeInteractor.getCitylist(ConstantApi.baiduKey, "朝阳", new OnNetResultListener<CityListBean>() {
+    public void queryWeatherData() {
+        String content = city.getText().toString();
+        //调用查询天气接口的方法
+        Subscription subscription = weatherInteractor.queryWeather(ConstantApi.baiduKey, content, new BaseSubsribe<WeatherResultBean>() {
+                    @Override
+                    public void onSuccess(WeatherResultBean result) {
 
-            @Override
-            public void onSuccess(CityListBean result) {
+                        WeatherResultBean.RetDataEntity retData = result.getRetData();
+                        queryresult.setText(retData.getCity() + ":" + retData.getWeather() + ":" + retData.getDate());
+                    }
 
-                ArrayList<CityListBean.RetDataEntity> resultEntities = result.getRetData();
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        queryresult.setText("查询失败");
 
-                listView.setAdapter(new CitysAdapter(resultEntities, MainActivity.this));
-            }
-        });
+                    }
+                }
+        );
         //取消请求
 //        subscription.unsubscribe();
     }

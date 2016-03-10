@@ -1,7 +1,7 @@
 package com.finddreams.retrofit.api.service;
 
 
-import com.finddreams.retrofit.bean.CityListBean;
+import com.finddreams.retrofit.bean.WeatherResultBean;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -13,8 +13,8 @@ import rx.Observable;
  */
 public interface WeatherApiService {
     /**
-     * 查询可用城市列表
+     * 查询天气
      */
-    @GET("apistore/weatherservice/citylist")
-    Observable<CityListBean> getCitylist(@Header("apikey") String apikey, @Query("cityname") String cityname);
+    @GET("apistore/weatherservice/cityname")
+    Observable<WeatherResultBean> queryWeather(@Header("apikey") String apikey, @Query("cityname") String cityname);
 }
