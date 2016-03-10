@@ -21,8 +21,6 @@ public class App extends Application {
         super.onCreate();
 
         setDraggerConfig();
-
-
     }
 
     public AppComponent component() {
