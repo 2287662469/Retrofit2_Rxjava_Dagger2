@@ -1,9 +1,10 @@
 package com.finddreams.retrofit.api.config;
 
 
-import com.finddreams.retrofit.api.interaction.ExpressInteractorImpl;
+import com.finddreams.retrofit.api.interaction.WeatherInteractor;
+import com.finddreams.retrofit.api.interaction.WeatherInteractorImpl;
 import com.finddreams.retrofit.api.net.RestApiAdapter;
-import com.finddreams.retrofit.api.service.ExpressApiService;
+import com.finddreams.retrofit.api.service.WeatherApiService;
 
 import dagger.Module;
 import dagger.Provides;
@@ -24,12 +25,12 @@ public class InteractorModule {
     }
 
     @Provides
-    public ExpressApiService provideHomeApi(Retrofit restAdapter) {
-        return restAdapter.create(ExpressApiService.class);
+    public WeatherApiService provideHomeApi(Retrofit restAdapter) {
+        return restAdapter.create(WeatherApiService.class);
     }
 
     @Provides
-    public ExpressInteractorImpl provideHomeInteractor(ExpressApiService myApi) {
-        return new ExpressInteractorImpl(myApi);
+    public WeatherInteractor provideHomeInteractor(WeatherApiService myApi) {
+        return new WeatherInteractorImpl(myApi);
     }
 }

@@ -38,7 +38,7 @@ public abstract class BaseSubsribe<T> extends Subscriber<T> {
     @Override
     public void onError(Throwable e) {
         e.printStackTrace();
-        Log.i(TAG,"onError");
+        Log.i(TAG,"onError"+e.getMessage());
 
     }
 

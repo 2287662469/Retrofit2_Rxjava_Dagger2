@@ -6,22 +6,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.finddreams.retrofit.bean.ExpressBean;
-
-import org.w3c.dom.Text;
+import com.finddreams.retrofit.bean.CityListBean;
 
 import java.util.ArrayList;
 
 /**
-*适配器
-*@author finddreams
-*@address http://blog.csdn.net/finddreams
-*/
-public class ExpressAdapter extends BaseAdapter {
+ * 适配器
+ *
+ * @author finddreams
+ * @address http://blog.csdn.net/finddreams
+ */
+public class CitysAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<ExpressBean.ResultEntity> list;
+    private ArrayList<CityListBean.RetDataEntity> list;
 
-    public ExpressAdapter(ArrayList<ExpressBean.ResultEntity> list, Context context) {
+    public CitysAdapter(ArrayList<CityListBean.RetDataEntity> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -49,8 +48,8 @@ public class ExpressAdapter extends BaseAdapter {
         TextView text1 = (TextView) convertView.findViewById(android.R.id.text1);
         TextView text2 = (TextView) convertView.findViewById(android.R.id.text2);
 
-        text1.setText(list.get(position).getName());
-        text2.setText(list.get(position).getTel());
+        text1.setText(list.get(position).getName_cn());
+        text2.setText(list.get(position).getArea_id());
 
         return convertView;
     }

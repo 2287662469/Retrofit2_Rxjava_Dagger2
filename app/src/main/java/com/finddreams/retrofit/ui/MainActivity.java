@@ -2,18 +2,15 @@ package com.finddreams.retrofit.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.finddreams.retrofit.App;
 import com.finddreams.retrofit.R;
 import com.finddreams.retrofit.api.config.AppComponent;
 import com.finddreams.retrofit.api.config.ConstantApi;
-import com.finddreams.retrofit.api.interaction.ExpressInteractorImpl;
+import com.finddreams.retrofit.api.interaction.WeatherInteractor;
 import com.finddreams.retrofit.api.net.OnNetResultListener;
-import com.finddreams.retrofit.bean.ExpressBean;
-
+import com.finddreams.retrofit.bean.CityListBean;
 
 import java.util.ArrayList;
 
@@ -21,6 +18,7 @@ import rx.Subscription;
 
 /**
  * 主页
+ *
  * @author finddreams
  * @address http://blog.csdn.net/finddreams
  */
@@ -28,37 +26,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     private AppComponent component;
-    private ExpressInteractorImpl homeInteractor;
-    private Button retrofit;
+    private WeatherInteractor homeInteractor;
     private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        retrofit = (Button) findViewById(R.id.retrofit);
         listView = (ListView) findViewById(R.id.listview);
         component = App.get(this).component();
-        homeInteractor = component.getHomeInteractor();
-        retrofit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getExpressData();
-            }
-        });
+        homeInteractor = component.getWeatherInteractor();
+
+        getWeatherData();
 
 
     }
 
-    public void getExpressData() {
-        Subscription subscription = homeInteractor.getExpress(ConstantApi.baiduKey, "", new OnNetResultListener<ExpressBean>() {
+    public void getWeatherData() {
+        Subscription subscription = homeInteractor.getCitylist(ConstantApi.baiduKey, "朝阳", new OnNetResultListener<CityListBean>() {
 
             @Override
-            public void onSuccess(ExpressBean result) {
+            public void onSuccess(CityListBean result) {
 
-                ArrayList<ExpressBean.ResultEntity> resultEntities = result.getResult();
+                ArrayList<CityListBean.RetDataEntity> resultEntities = result.getRetData();
 
-                listView.setAdapter(new ExpressAdapter(resultEntities, MainActivity.this));
+                listView.setAdapter(new CitysAdapter(resultEntities, MainActivity.this));
             }
         });
         //取消请求
