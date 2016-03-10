@@ -5,7 +5,7 @@ import android.util.Log;
 import rx.Subscriber;
 
 /**
- * 订阅基类
+ * 观察者
  *
  * @author finddreams
  * @address http://blog.csdn.net/finddreams
